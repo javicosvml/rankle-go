@@ -1,0 +1,172 @@
+# GoReleaser configuration
+# Documentation: https://goreleaser.com
+version: 2
+
+# Hooks to run before builds
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+    - go generate ./...
+    - go test ./...
+
+# Build configuration
+builds:
+  - id: rankle
+    binary: rankle
+    main: ./cmd/rankle
+    env:
+      - CGO_ENABLED=0  # Static binaries
+    
+    # Embed build metadata
+    ldflags:
+      - -s -w  # Strip debug info
+      - -X main.version={{.Version}}
+      - -X main.commit={{.Commit}}
+      - -X main.date={{.Date}}
+      - -X main.builtBy=goreleaser
+    
+    # Target platforms
+    goos:
+      - linux
+      - darwin
+      - windows
+    
+    goarch:
+      - amd64
+      - arm64
+    
+    # Ignore combinations
+    ignore:
+      - goos: windows
+        goarch: arm64
+
+# Archives configuration
+archives:
+  - id: rankle-archive
+    builds:
+      - rankle
+    
+    # Archive name format
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- .Arch }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
+    
+    # Archive format per OS
+    format_overrides:
+      - goos: windows
+        format: zip
+    
+    # Files to include in archive
+    files:
+      - LICENSE
+      - README.md
+      - CHANGELOG.md
+
+# Checksum configuration
+checksum:
+  name_template: 'checksums.txt'
+  algorithm: sha256
+
+# Changelog configuration
+changelog:
+  use: github
+  sort: asc
+  abbrev: 7
+  
+  groups:
+    - title: '🚀 Features'
+      regexp: '^.*?feat(\([[:word:]]+\))??!?:.+$'
+      order: 0
+    - title: '🐛 Bug Fixes'
+      regexp: '^.*?fix(\([[:word:]]+\))??!?:.+$'
+      order: 1
+    - title: '📚 Documentation'
+      regexp: '^.*?docs(\([[:word:]]+\))??!?:.+$'
+      order: 2
+    - title: '🔧 Other Changes'
+      order: 999
+  
+  filters:
+    exclude:
+      - '^test:'
+      - '^chore:'
+      - '^ci:'
+      - 'merge conflict'
+      - Merge pull request
+      - Merge remote-tracking branch
+      - Merge branch
+
+# GitHub Release configuration
+release:
+  github:
+    owner: javicosvml
+    name: rankle-go
+  
+  # Release name template
+  name_template: "v{{.Version}}"
+  
+  # Draft release
+  draft: false
+  
+  # Pre-release detection
+  prerelease: auto
+  
+  # Release mode
+  mode: replace
+  
+  # Header and footer for release notes
+  header: |
+    ## 🃏 Rankle Go {{.Version}}
+    
+    **Release Date:** {{.Date}}
+    
+    Download the appropriate binary for your platform below.
+  
+  footer: |
+    ---
+    
+    ### 📦 Installation
+    
+    **Linux/macOS:**
+    ```bash
+    # Extract archive
+    tar -xzf rankle_{{.Version}}_linux_amd64.tar.gz
+    
+    # Move to PATH
+    sudo mv rankle /usr/local/bin/
+    
+    # Verify
+    rankle --version
+    ```
+    
+    **Windows:**
+    ```powershell
+    # Extract ZIP and add to PATH
+    # Run: rankle.exe --version
+    ```
+    
+    ### 🔒 Verify Checksums
+    
+    ```bash
+    sha256sum -c checksums.txt
+    ```
+    
+    ### 📝 Full Changelog
+    
+    See [CHANGELOG.md](https://github.com/javicosvml/rankle-go/blob/main/CHANGELOG.md)
+    
+    ---
+    
+    **🙏 Thank you for using Rankle!**
+
+# Announcement (optional - can integrate with Twitter, Slack, etc.)
+announce:
+  skip: "{{gt .Patch 0}}"  # Skip patch releases
+
+# Metadata
+metadata:
+  mod_timestamp: '{{ .CommitTimestamp }}'

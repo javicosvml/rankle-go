@@ -17,8 +17,13 @@ import (
 )
 
 var (
-	version = "1.0.0"
+	// Version information (set by GoReleaser via ldflags)
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+	builtBy = "manual"
 
+	// CLI flags
 	jsonOutput  bool
 	textOutput  bool
 	outputType  string
@@ -46,8 +51,15 @@ func main() {
 
 	// Show version
 	if showVersion {
-		fmt.Printf("Rankle Go v%s\n", version)
-		fmt.Println("Web Infrastructure Reconnaissance Tool")
+		fmt.Printf("🃏 Rankle Go v%s\n", version)
+		fmt.Println("   Web Infrastructure Reconnaissance Tool")
+		fmt.Println()
+		fmt.Printf("   Version:  %s\n", version)
+		fmt.Printf("   Commit:   %s\n", commit)
+		fmt.Printf("   Built:    %s\n", date)
+		fmt.Printf("   Built by: %s\n", builtBy)
+		fmt.Println()
+		fmt.Println("   Repository: https://github.com/javicosvml/rankle-go")
 		os.Exit(0)
 	}
 

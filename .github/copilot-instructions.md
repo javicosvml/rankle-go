@@ -34,10 +34,12 @@ internal/config/     # Internal configuration (not exposed)
 - ✅ **LICENSE** - MIT License
 - ✅ **Dockerfile, go.mod, go.sum** - Technical files
 - ✅ **.pre-commit-config.yaml, .golangci.yml** - Code quality tools
+- ✅ **.goreleaser.yml** - Automated release configuration
 - ✅ **SECURITY.md** - Security policy (GitHub standard)
 - ✅ **CODE_OF_CONDUCT.md** - Community guidelines (GitHub standard)
 - ✅ **CHANGELOG.md** - Version history (Keep a Changelog format)
 - ✅ **AUTHORS.md** - Contributors list
+- ✅ **RELEASE.md** - Release process documentation
 
 ### Forbidden Files  
 **NEVER create these:**

@@ -513,6 +513,31 @@ If you find this project useful, please consider giving it a ⭐!
 ![GitHub issues](https://img.shields.io/github/issues/javicosvml/rankle-go)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/javicosvml/rankle-go)
 
+## 📦 Release Process
+
+This project uses [GoReleaser](https://goreleaser.com/) for automated releases.
+
+### For Maintainers
+
+To create a new release:
+
+```bash
+# Using the helper script
+./scripts/release.sh 1.1.0
+
+# Or manually
+git tag -a v1.1.0 -m "Release v1.1.0"
+git push origin v1.1.0
+```
+
+GitHub Actions will automatically:
+- ✅ Build binaries for Linux, macOS, Windows (amd64, arm64)
+- ✅ Generate SHA256 checksums
+- ✅ Create GitHub Release with automated notes
+- ✅ Upload all artifacts
+
+See [RELEASE.md](RELEASE.md) for detailed release guidelines.
+
 ---
 
 <div align="center">
