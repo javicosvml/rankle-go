@@ -1,4 +1,5 @@
-# GoReleaser configuration
+# GoReleaser configuration for Rankle Go
+# AMD64 and ARM64 only
 # Documentation: https://goreleaser.com
 version: 2
 
@@ -7,7 +8,6 @@ before:
   hooks:
     - go mod tidy
     - go mod download
-    - go generate ./...
     - go test ./...
 
 # Build configuration
@@ -26,7 +26,7 @@ builds:
       - -X main.date={{.Date}}
       - -X main.builtBy=goreleaser
 
-    # Target platforms
+    # Target platforms - AMD64 and ARM64 only
     goos:
       - linux
       - darwin
@@ -36,7 +36,7 @@ builds:
       - amd64
       - arm64
 
-    # Ignore combinations
+    # Ignore Windows ARM64 (not commonly used)
     ignore:
       - goos: windows
         goarch: arm64
@@ -53,7 +53,6 @@ archives:
       {{- .Version }}_
       {{- .Os }}_
       {{- .Arch }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
 
     # Archive format per OS
     format_overrides:
@@ -124,29 +123,58 @@ release:
 
     **Release Date:** {{.Date}}
 
-    Download the appropriate binary for your platform below.
+    ### 📦 Available Binaries (AMD64 & ARM64)
+
+    | Platform | AMD64 | ARM64 |
+    |----------|-------|-------|
+    | **Linux** | ✅ | ✅ |
+    | **macOS** | ✅ (Intel) | ✅ (Apple Silicon) |
+    | **Windows** | ✅ | ❌ |
+
+    Download the appropriate archive for your platform below.
 
   footer: |
     ---
 
     ### 📦 Installation
 
-    **Linux/macOS:**
+    **Linux AMD64:**
     ```bash
-    # Extract archive
+    wget https://github.com/javicosvml/rankle-go/releases/download/{{.Tag}}/rankle_{{.Version}}_linux_amd64.tar.gz
     tar -xzf rankle_{{.Version}}_linux_amd64.tar.gz
-
-    # Move to PATH
     sudo mv rankle /usr/local/bin/
-
-    # Verify
     rankle --version
     ```
 
-    **Windows:**
+    **Linux ARM64:**
+    ```bash
+    wget https://github.com/javicosvml/rankle-go/releases/download/{{.Tag}}/rankle_{{.Version}}_linux_arm64.tar.gz
+    tar -xzf rankle_{{.Version}}_linux_arm64.tar.gz
+    sudo mv rankle /usr/local/bin/
+    rankle --version
+    ```
+
+    **macOS AMD64 (Intel):**
+    ```bash
+    wget https://github.com/javicosvml/rankle-go/releases/download/{{.Tag}}/rankle_{{.Version}}_darwin_amd64.tar.gz
+    tar -xzf rankle_{{.Version}}_darwin_amd64.tar.gz
+    sudo mv rankle /usr/local/bin/
+    rankle --version
+    ```
+
+    **macOS ARM64 (Apple Silicon):**
+    ```bash
+    wget https://github.com/javicosvml/rankle-go/releases/download/{{.Tag}}/rankle_{{.Version}}_darwin_arm64.tar.gz
+    tar -xzf rankle_{{.Version}}_darwin_arm64.tar.gz
+    sudo mv rankle /usr/local/bin/
+    rankle --version
+    ```
+
+    **Windows AMD64:**
     ```powershell
-    # Extract ZIP and add to PATH
-    # Run: rankle.exe --version
+    # Download ZIP from releases
+    # Extract and add to PATH
+    rankle.exe --version
     ```
 
     ### 🔒 Verify Checksums
@@ -162,10 +190,6 @@ release:
     ---
 
     **🙏 Thank you for using Rankle!**
-
-# Announcement (optional - can integrate with Twitter, Slack, etc.)
-announce:
-  skip: "{{gt .Patch 0}}"  # Skip patch releases
 
 # Metadata
 metadata:

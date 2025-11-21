@@ -65,15 +65,50 @@
 
 ### Option 1: Download Pre-built Binaries ⚡
 
-Download the latest release for your platform from the [Releases](https://github.com/javicosvml/rankle-go/releases) page.
+**Supported Platforms:**
+- ✅ Linux AMD64 / ARM64
+- ✅ macOS AMD64 (Intel) / ARM64 (Apple Silicon)
+- ✅ Windows AMD64
 
+Download the latest release from the [Releases](https://github.com/javicosvml/rankle-go/releases) page.
+
+**Linux AMD64:**
 ```bash
-# Linux/macOS
-chmod +x rankle-*
-./rankle-* example.com
+wget https://github.com/javicosvml/rankle-go/releases/latest/download/rankle_VERSION_linux_amd64.tar.gz
+tar -xzf rankle_VERSION_linux_amd64.tar.gz
+sudo mv rankle /usr/local/bin/
+rankle --version
+```
 
-# Windows
-rankle-windows-amd64.exe example.com
+**Linux ARM64:**
+```bash
+wget https://github.com/javicosvml/rankle-go/releases/latest/download/rankle_VERSION_linux_arm64.tar.gz
+tar -xzf rankle_VERSION_linux_arm64.tar.gz
+sudo mv rankle /usr/local/bin/
+rankle --version
+```
+
+**macOS (Intel):**
+```bash
+wget https://github.com/javicosvml/rankle-go/releases/latest/download/rankle_VERSION_darwin_amd64.tar.gz
+tar -xzf rankle_VERSION_darwin_amd64.tar.gz
+sudo mv rankle /usr/local/bin/
+rankle --version
+```
+
+**macOS (Apple Silicon):**
+```bash
+wget https://github.com/javicosvml/rankle-go/releases/latest/download/rankle_VERSION_darwin_arm64.tar.gz
+tar -xzf rankle_VERSION_darwin_arm64.tar.gz
+sudo mv rankle /usr/local/bin/
+rankle --version
+```
+
+**Windows AMD64:**
+```powershell
+# Download ZIP from releases page
+# Extract and add to PATH
+rankle.exe --version
 ```
 
 ### Option 2: Install with Go 📦
@@ -85,7 +120,7 @@ rankle example.com
 
 ### Option 3: Build from Source 🔨
 
-**Multi-platform binaries with Docker:**
+**Multi-platform binaries with Docker (AMD64 & ARM64 only):**
 ```bash
 git clone https://github.com/javicosvml/rankle-go.git
 cd rankle-go
@@ -523,6 +558,47 @@ docs: add batch scanning examples
 - 💬 Open a [Discussion](https://github.com/javicosvml/rankle-go/discussions)
 - 🐛 Report [Issues](https://github.com/javicosvml/rankle-go/issues)
 - 📧 Email: contact@rankle-go.example.com
+
+## 🚢 Releases
+
+### Automated Release Process
+
+Rankle uses **GitHub Actions + GoReleaser** for fully automated releases.
+
+**Supported Platforms:**
+- ✅ Linux AMD64 / ARM64
+- ✅ macOS AMD64 (Intel) / ARM64 (Apple Silicon)
+- ✅ Windows AMD64
+
+### Creating a Release (Maintainers)
+
+```bash
+# 1. Update version and changelog
+vim CHANGELOG.md
+git commit -am "docs: update changelog for v1.0.0"
+
+# 2. Create and push tag
+git tag -a v1.0.0 -m "Release v1.0.0: Initial release"
+git push origin v1.0.0
+
+# 3. GitHub Actions automatically:
+#    ✅ Runs tests
+#    ✅ Builds 5 binaries (AMD64 & ARM64)
+#    ✅ Creates archives (.tar.gz / .zip)
+#    ✅ Generates checksums
+#    ✅ Publishes to GitHub Releases
+```
+
+**That's it!** No manual steps required. ✨
+
+📖 **Complete guide:** [RELEASE_GUIDE.md](RELEASE_GUIDE.md)
+
+### Versioning
+
+We follow [Semantic Versioning](https://semver.org/):
+- **v1.0.0** - Major release (breaking changes)
+- **v1.1.0** - Minor release (new features)
+- **v1.0.1** - Patch release (bug fixes)
 
 ## 📄 License
 
