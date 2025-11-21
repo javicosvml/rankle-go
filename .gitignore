@@ -15,6 +15,11 @@ coverage.html
 # Go workspace file
 go.work
 
+# direnv local environment
+.gopath/
+.gocache/
+.envrc.local
+
 # IDE specific files
 .idea/
 .vscode/

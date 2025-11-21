@@ -83,13 +83,13 @@ Paste test output here
 
 ```markdown
 ### Added
-- 
+-
 
 ### Changed
-- 
+-
 
 ### Fixed
-- 
+-
 ```
 
 ---

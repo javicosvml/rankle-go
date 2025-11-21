@@ -1,95 +1,51 @@
-linters-settings:
-  govet:
-    enable-all: true
-    disable:
-      - shadow
-
-  gocyclo:
-    min-complexity: 15
-
-  dupl:
-    threshold: 100
-
-  goconst:
-    min-len: 3
-    min-occurrences: 3
-
-  misspell:
-    locale: US
-
-  lll:
-    line-length: 140
-
-  goimports:
-    local-prefixes: github.com/javicosvml/rankle-go
-
-  gocritic:
-    enabled-tags:
-      - diagnostic
-      - experimental
-      - opinionated
-      - performance
-      - style
-
-linters:
-  enable:
-    # Enabled by default
-    - errcheck       # Check for unchecked errors
-    - gosimple       # Simplify code
-    - govet          # Standard Go vet
-    - ineffassign    # Detect ineffectual assignments
-    - staticcheck    # Go static analysis
-    - typecheck      # Type-check code
-    - unused         # Detect unused code
-
-    # Extra linters
-    - gofmt          # Check code formatting
-    - goimports      # Check import formatting
-    - misspell       # Check for misspelled words
-    - unconvert      # Remove unnecessary type conversions
-    - dupl           # Check for code duplication
-    - goconst        # Find repeated strings that could be constants
-    - gocyclo        # Check cyclomatic complexity
-    - gofumpt        # Stricter gofmt
-    - revive         # Fast, configurable linter
-    - gosec          # Security checks
-    - exportloopref  # Check for loop variable issues
-    - nilerr         # Check for nil errors
-    - predeclared    # Check for shadowing of predeclared identifiers
-    - wastedassign   # Find wasted assignments
-
-  disable:
-    - funlen         # Too strict for small projects
-    - gocognit       # Similar to gocyclo
-    - nestif         # Too opinionated
-    - nlreturn       # Too opinionated
-    - wsl            # Too opinionated on whitespace
+# golangci-lint configuration
+# Compatible with golangci-lint v2.x
 
 run:
   timeout: 5m
   tests: true
-  build-tags: []
   skip-dirs:
     - vendor
     - build
-  skip-files: []
+
+linters:
+  enable-all: true
+  disable:
+    # Deprecated linters
+    - maligned
+    - interfacer
+    - golint
+    - scopelint
+    - exhaustivestruct
+    - ifshort
+    - deadcode
+    - varcheck
+    - structcheck
+    - nosnakecase
+
+    # Too opinionated
+    - funlen
+    - gocognit
+    - nestif
+    - nlreturn
+    - wsl
+    - godox
+    - testpackage
+    - wrapcheck
+    - exhaustruct
+    - varnamelen
+    - tagliatelle
+    - ireturn
+    - cyclop
 
 issues:
-  exclude-use-default: false
   max-issues-per-linter: 0
   max-same-issues: 0
 
   exclude-rules:
-    # Exclude some linters from running on tests files
     - path: _test\.go
       linters:
         - gocyclo
         - dupl
         - gosec
-
-output:
-  format: colored-line-number
-  print-issued-lines: true
-  print-linter-name: true
-  uniq-by-line: true
-  sort-results: true
+        - goconst

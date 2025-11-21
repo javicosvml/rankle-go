@@ -41,7 +41,7 @@ internal/config/     # Internal configuration (not exposed)
 - ✅ **AUTHORS.md** - Contributors list
 - ✅ **RELEASE.md** - Release process documentation
 
-### Forbidden Files  
+### Forbidden Files
 **NEVER create these:**
 - ❌ **BUILD.md** - Build instructions go in README.md
 - ❌ **CONTRIBUTING.md** - Contributing guidelines in README.md
@@ -176,7 +176,7 @@ Before completing ANY task:
 
 ---
 
-**Remember**: 
+**Remember**:
 - Everything goes in README.md
 - No extra documentation files
 - Keep it simple

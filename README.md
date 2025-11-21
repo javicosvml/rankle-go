@@ -9,7 +9,7 @@
 [![Pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?style=for-the-badge&logo=pre-commit)](https://github.com/pre-commit/pre-commit)
 [![Go Report Card](https://goreportcard.com/badge/github.com/javicosvml/rankle-go?style=for-the-badge)](https://goreportcard.com/report/github.com/javicosvml/rankle-go)
 
-*Named after **Rankle, Master of Pranks** from Magic: The Gathering*  
+*Named after **Rankle, Master of Pranks** from Magic: The Gathering*
 *A legendary faerie who excels at uncovering secrets*
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Development](#️-development) • [Contributing](#-contributing)
@@ -180,10 +180,10 @@ cat reports/example_com_rankle.json | jq '.security.tls_version'
 # GitHub Actions example
 - name: Install Rankle
   run: go install github.com/javicosvml/rankle-go/cmd/rankle@latest
-  
+
 - name: Security Scan
   run: rankle mysite.com --json
-  
+
 - name: Check Results
   run: |
     if jq -e '.security.headers.strict_transport_security' reports/*.json; then
@@ -261,6 +261,10 @@ fi
 git clone https://github.com/javicosvml/rankle-go.git
 cd rankle-go
 
+# Setup direnv (optional but recommended - isolated environment)
+# See DIRENV_SETUP.md for details
+direnv allow
+
 # Install pre-commit hooks
 pip install pre-commit    # or: brew install pre-commit
 pre-commit install
@@ -273,9 +277,34 @@ go build -o rankle cmd/rankle/main.go
 ./rankle example.com
 ```
 
+### 🔧 Development Environment (direnv)
+
+**Recommended:** Use direnv for isolated, automatic environment setup:
+
+```bash
+# Install direnv (one-time)
+brew install direnv  # macOS
+# or: apt-get install direnv  # Linux
+
+# Add to ~/.zshrc or ~/.bashrc (one-time)
+eval "$(direnv hook zsh)"  # or bash
+
+# Allow .envrc in project
+cd rankle-go
+direnv allow
+```
+
+**Benefits:**
+- ✅ Isolated `GOPATH` per project (`$PWD/.gopath`)
+- ✅ Automatic environment loading when you `cd` into directory
+- ✅ Project-specific Go version via asdf
+- ✅ Clean global environment
+
+📖 **Full setup guide:** [DIRENV_SETUP.md](DIRENV_SETUP.md)
+
 ### Pre-commit Hooks 🔒
 
-This project uses **automated pre-commit hooks** to ensure code quality:
+This project uses **automated pre-commit hooks** with comprehensive Go best practices:
 
 <table>
 <tr><th>Category</th><th>Checks</th></tr>
@@ -284,30 +313,54 @@ This project uses **automated pre-commit hooks** to ensure code quality:
 <td>
 • Trailing whitespace removal<br>
 • End-of-file fixes<br>
-• YAML validation<br>
+• Mixed line ending fixes<br>
+• YAML/JSON validation<br>
 • Large file prevention<br>
-• Merge conflict detection
+• Merge conflict detection<br>
+• Private key detection
 </td>
 </tr>
 <tr>
 <td><b>Go Formatting</b></td>
 <td>
 • <code>gofmt</code> - Code formatting<br>
-• <code>goimports</code> - Import organization<br>
 • <code>go vet</code> - Static analysis<br>
-• <code>go mod tidy</code> - Dependency cleanup
+• <code>go mod tidy</code> - Dependency cleanup<br>
+• <code>go build</code> - Build verification
 </td>
 </tr>
 <tr>
-<td><b>Quality & Security</b></td>
+<td><b>Go Testing</b></td>
 <td>
-• <code>golangci-lint</code> - 20+ linters<br>
 • <code>go test -race</code> - Race detector<br>
+• All tests must pass before commit
+</td>
+</tr>
+<tr>
+<td><b>Advanced Linting</b></td>
+<td>
+• <code>golangci-lint</code> - 30+ linters<br>
+• Error checking (<code>errcheck</code>)<br>
 • Security checks (<code>gosec</code>)<br>
-• Complexity analysis
+• Code duplication detection<br>
+• Complexity analysis<br>
+• Performance optimizations<br>
+• Style & best practices
 </td>
 </tr>
 </table>
+
+**Setup golangci-lint (optional but recommended):**
+```bash
+# macOS
+brew install golangci-lint
+
+# Linux / manual install
+./scripts/install-golangci-lint.sh
+
+# Or with Go
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+```
 
 **Commands:**
 ```bash
@@ -316,6 +369,9 @@ pre-commit run --all-files
 
 # Run specific hook
 pre-commit run golangci-lint --all-files
+
+# Run only Go tests
+pre-commit run go-test-repo-mod --all-files
 
 # Update hook versions
 pre-commit autoupdate

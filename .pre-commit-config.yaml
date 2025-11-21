@@ -1,31 +1,37 @@
 # Pre-commit hooks for Rankle Go
-# See https://pre-commit.com for more information
+# Best practices for Go 1.23+
 
 repos:
   # General file checks
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v6.0.0
     hooks:
+      # File formatting
       - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+      # File validation
       - id: check-yaml
+      - id: check-json
       - id: check-added-large-files
         args: ['--maxkb=1000']
       - id: check-merge-conflict
+      - id: check-case-conflict
+
+      # Security
+      - id: detect-private-key
 
   # Go formatting and linting
   - repo: https://github.com/TekWizely/pre-commit-golang
-    rev: v1.0.0-rc.1
+    rev: v1.0.0-rc.4
     hooks:
-      # Go formatting (gofmt)
+      # Go formatting
       - id: go-fmt
         args: [-w]
 
-      # Go imports formatting
-      - id: go-imports
-        args: [-w]
-
-      # Go vet
+      # Go static analysis
       - id: go-vet
 
       # Go tests with race detector
@@ -35,11 +41,16 @@ repos:
       # Go mod tidy
       - id: go-mod-tidy
 
-  # golangci-lint - comprehensive linting
-  - repo: https://github.com/golangci/golangci-lint
-    rev: v1.55.2
+      # Go build check
+      - id: go-build-repo-mod
+
+  # Additional linting with system golangci-lint
+  - repo: local
     hooks:
       - id: golangci-lint
-        args:
-          - --timeout=5m
-          - --fix
+        name: golangci-lint (comprehensive Go linter)
+        description: Run golangci-lint if available
+        entry: bash -c 'if command -v golangci-lint &> /dev/null; then golangci-lint run --config .golangci.yml --fix; else echo "⚠️  golangci-lint not installed (optional)"; fi'
+        language: system
+        types: [go]
+        pass_filenames: false

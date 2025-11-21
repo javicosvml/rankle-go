@@ -1,5 +1,5 @@
 # Dockerfile for Rankle Go
-# 
+#
 # Build all platform binaries:
 #   docker build -t rankle-builder .
 #   docker run --rm -v $(pwd)/build:/build rankle-builder

@@ -69,7 +69,7 @@ The repository root should contain **ONLY** these files:
 
 ### Go Conventions & Idiomatic Code
 1. **Follow Effective Go & Go Proverbs**: Use `gofmt`, `goimports`, `go vet` religiously
-2. **Error handling**: 
+2. **Error handling**:
    - Never ignore errors (`if err != nil`)
    - Wrap errors with context using `fmt.Errorf("operation failed: %w", err)`
    - Use sentinel errors for frequently returned errors
@@ -82,11 +82,11 @@ The repository root should contain **ONLY** these files:
    - Constants: CamelCase (HTTPRequest, URLPath, not HTTP_REQUEST)
    - Acronyms: Keep uppercase (HTTP, URL, ID not Http, Url, Id)
 4. **Exported vs Unexported**: Capital for public API, lowercase for internal/private
-5. **Documentation**: 
+5. **Documentation**:
    - Every exported symbol MUST have godoc comment (full sentence)
    - Comments explain "why", not "what" (code should be self-documenting)
    - Package-level documentation at the top of main package file
-6. **Testing**: 
+6. **Testing**:
    - Write table-driven tests with `t.Run()` for subtests
    - Use `_test.go` suffix
    - Use `testing.B.Loop()` for reliable benchmarks
@@ -133,7 +133,7 @@ The repository root should contain **ONLY** these files:
 
 ### Testing Requirements
 - Unit tests for all core logic in pkg/
-- Table-driven tests with `t.Run()` for multiple scenarios  
+- Table-driven tests with `t.Run()` for multiple scenarios
 - Use subtests for better organization and parallel execution
 - Mock external dependencies (DNS, HTTP calls)
 - Run tests before committing: `go test -v ./...`
