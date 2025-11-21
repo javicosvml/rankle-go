@@ -38,13 +38,12 @@ internal/config/     # Internal configuration (not exposed)
 - ✅ **SECURITY.md** - Security policy (GitHub standard)
 - ✅ **CODE_OF_CONDUCT.md** - Community guidelines (GitHub standard)
 - ✅ **CHANGELOG.md** - Version history (Keep a Changelog format)
-- ✅ **AUTHORS.md** - Contributors list
-- ✅ **RELEASE.md** - Release process documentation
 
 ### Forbidden Files
 **NEVER create these:**
-- ❌ **BUILD.md** - Build instructions go in README.md
-- ❌ **CONTRIBUTING.md** - Contributing guidelines in README.md
+- ❌ **BUILD.md, CONTRIBUTING.md** - Goes in README.md
+- ❌ **AUTHORS.md, RELEASE_GUIDE.md** - Unnecessary, info in README
+- ❌ **DIRENV_SETUP.md, GITHUB_ACTIONS.md** - Development info in README
 - ❌ **Makefile** - Use Docker or `go build` directly
 - ❌ **build.sh, install.sh, setup.sh** - Document commands in README.md
 - ❌ **TODO.md, NOTES.md** - Use GitHub Issues/Projects

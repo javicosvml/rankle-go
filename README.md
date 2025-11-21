@@ -296,10 +296,6 @@ fi
 git clone https://github.com/javicosvml/rankle-go.git
 cd rankle-go
 
-# Setup direnv (optional but recommended - isolated environment)
-# See DIRENV_SETUP.md for details
-direnv allow
-
 # Install pre-commit hooks
 pip install pre-commit    # or: brew install pre-commit
 pre-commit install
@@ -312,30 +308,24 @@ go build -o rankle cmd/rankle/main.go
 ./rankle example.com
 ```
 
-### 🔧 Development Environment (direnv)
+### Optional: Isolated Development Environment
 
-**Recommended:** Use direnv for isolated, automatic environment setup:
+For an isolated Go environment (like Python's virtualenv):
 
 ```bash
-# Install direnv (one-time)
+# Install direnv
 brew install direnv  # macOS
 # or: apt-get install direnv  # Linux
 
-# Add to ~/.zshrc or ~/.bashrc (one-time)
+# Add to ~/.zshrc or ~/.bashrc
 eval "$(direnv hook zsh)"  # or bash
 
-# Allow .envrc in project
+# Activate in project
 cd rankle-go
-direnv allow
+direnv allow  # Creates isolated GOPATH in .gopath/
 ```
 
-**Benefits:**
-- ✅ Isolated `GOPATH` per project (`$PWD/.gopath`)
-- ✅ Automatic environment loading when you `cd` into directory
-- ✅ Project-specific Go version via asdf
-- ✅ Clean global environment
-
-📖 **Full setup guide:** [DIRENV_SETUP.md](DIRENV_SETUP.md)
+Benefits: Isolated dependencies, automatic activation, clean global environment.
 
 ### Pre-commit Hooks 🔒
 
@@ -590,8 +580,6 @@ git push origin v1.0.0
 ```
 
 **That's it!** No manual steps required. ✨
-
-📖 **Complete guide:** [RELEASE_GUIDE.md](RELEASE_GUIDE.md)
 
 ### Versioning
 

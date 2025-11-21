@@ -1,5 +1,5 @@
-# golangci-lint configuration
-# Compatible with golangci-lint v2.x
+# golangci-lint configuration for Rankle Go
+# Compatible with golangci-lint v1.62+
 
 run:
   timeout: 5m
@@ -7,11 +7,13 @@ run:
   skip-dirs:
     - vendor
     - build
+    - .gopath
+    - .gocache
 
 linters:
   enable-all: true
   disable:
-    # Deprecated linters
+    # Deprecated/removed linters
     - maligned
     - interfacer
     - golint
@@ -22,6 +24,9 @@ linters:
     - varcheck
     - structcheck
     - nosnakecase
+
+    # Problematic in newer versions
+    - depguard  # Has configuration issues in v1.62+
 
     # Too opinionated
     - funlen
@@ -37,15 +42,57 @@ linters:
     - tagliatelle
     - ireturn
     - cyclop
+    - gochecknoglobals
+    - gochecknoinits
+    - paralleltest
+    - tparallel
+    - forcetypeassert
+    - maintidx
+
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+    check-blank: true
+
+  gocyclo:
+    min-complexity: 15
+
+  dupl:
+    threshold: 100
+
+  goconst:
+    min-len: 3
+    min-occurrences: 3
+
+  goimports:
+    local-prefixes: github.com/javicosvml/rankle-go
+
+  govet:
+    enable-all: true
+    disable:
+      - shadow
+
+  lll:
+    line-length: 140
+
+  misspell:
+    locale: US
 
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0
 
   exclude-rules:
+    # Exclude some linters from running on tests
     - path: _test\.go
       linters:
         - gocyclo
         - dupl
         - gosec
         - goconst
+        - funlen
+
+    # Exclude lll issues for long lines with go:generate
+    - linters:
+        - lll
+      source: "^//go:generate "
